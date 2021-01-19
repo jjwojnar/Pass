@@ -1,4 +1,4 @@
-// "use strict";
+"use strict";
 
 const maxZnakow = 6;
 // let frString = `Aachen, Aachenem, Aachenie, Aachenowi, Aachenu
@@ -6,49 +6,70 @@ const maxZnakow = 6;
 // abba, abbach, abbami, abbą, abbę, abbie, abbo, abbom, abbowie, abbów, abby
 // Abba, Abbą, Abbę, Abbie, Abbo, Abby
 // ABBA, ABB-ą, ABB-ę, ABB-ie, ABB-o, ABB-y`;
-let frString = `abba, abbach, abbami, abbą
+let frString = `abcdefgh
+abc xyz
+abba, abbach, abbami, abbą
 Abba, Abbą, Abbę
 ABBA, ABB-ą, ABB-ę`;
 
-console.log(`same slowa`, frString);
+/* console.log(
+  `same slowa:
+`,
+  frString
+); */
 
 const frWierszeArr = frString.split("\n");
-console.log(`wierszeArr`, frWierszeArr);
+/* console.log(
+  `
+========
+wierszeArr:
+`,
+  frWierszeArr
+); */
 
 const frSlowaArr = frWierszeArr.map((verse) => verse.split(", "));
-console.log(`każdy wiersz to array. frSlowaArr`, frSlowaArr);
+/* console.log(
+  `
+========
+każdy wiersz to array. frSlowaArr`,
+  frSlowaArr,
+  `
+========
+  `
+); */
 
-let fr = frSlowaArr.map((verseArr) => [verseArr[0], verseArr.map(changeWords)]);
-console.log(
-  `każdy wiersz to arr skladajacyc się z 1. słowa i drugi elementem jest cały wiesz - arr. usunieto nielitery
-`,
-  fr
-);
-
-function changeWords(wordsArr) {
-  // return wordsArr.map((word) => convertString(word));
-  console.log("l. 30", wordsArr);
-  var changed = wordsArr.map(function (word) {
-    return word;
-  });
-  return changed;
+function removeDuplicates(array) {
+  return [...new Set(array)];
 }
-/* 
+
+const maxLength = 5;
+
+let fr = frSlowaArr.map((verseArr) => [
+  verseArr[0],
+  removeDuplicates(
+    // usunięto duplikaty po  tym jak słowa mają tylko angielskie znaki i małe litery
+    verseArr
+      .map((word) => convertString(word)) // tylko małe litery z alfabetu angielskiego
+      .filter((word) => word.length <= maxLength) // nie dłuższe słowaniż limit znaków
+  ),
+]);
+
 function convertString(phrase) {
-  let str = phrase.toLowerCase().replace(/[^a-z]/g, "");
+  let str = phrase.toLowerCase();
+
   const charMap = {
     ą: "a",
+    ć: "c",
     ę: "e",
     ł: "l",
-    ć: "c",
     ń: "n",
-    ś: "s",
     ó: "o",
+    ś: "s",
     ź: "z",
     ż: "z",
   };
 
-  const rx = /(ą|ę|ł|ć|ń|ś|ó|ź|ż)/g;
+  const rx = /(ą|ć|ę|ł|ń|ó|ś|ź|ż)/g;
 
   // if any non-english charr exists,replace it with proper char
   if (rx.test(str)) {
@@ -57,33 +78,33 @@ function convertString(phrase) {
     });
   }
 
+  // if there are other invalid chars, convert them into blank spaces
+  str = str.replace(/[^a-z]/gi, "");
+
   return str;
 }
- */
-// var fr = ["one", "two", "three"];
-// fr = fr.map(bigArr => [bigArr[0], bigArr[1].map(word => word.replace(/[^a-zA-Z]/g, "")]);
-console.log(fr);
 
-// var arr = ["one", "two", "three"];
-// function wylacznieLitery
-// arr.forEach(function (part, index) {
-//   arr[index] = "four";
-// });
-// console.log(arr);
+/* console.log(
+  `każdy wiersz to arr skladajacyc się z 1. słowa i drugi elementem jest cały wiesz - arr. usunieto nielitery
+`,
+  fr
+); */
+// wywalić puste wiersze
+const frNoEmpty = fr.filter((element) => element[1].length > 0);
 
-// usunąc znaki typu - ' . ? SPACE
+console.log("frNoEmpty", frNoEmpty, "==========");
+
+// zrobic listę [slowoWlasciwe, slowoZrodlowe
 /* 
-const array1 = [
-  ["a", "b", "c"],
-  ["d", "e", "f"],
-];
-array1.forEach((el) => el.forEach((element) => console.log(element)));
-// expected output: "a"
-// expected output: "b"
-// expected output: "c"
+frOdwr = frNoEmpty.map((el) => el);
+console.log(frOdwr);
  */
+// przesegregować
 
-// let x = x.replace(/[^a-zA-Z]/g, "");
+// usunąć duplikaty a jednocześnie we właściwym słowie dopisać
+
+// spr jak długi string js
+
 /* 
 // How for.each actually works:
 var arr = ["one", "two", "three"];
@@ -106,11 +127,3 @@ console.log(arr[2].num);
 console.log(arr);
 //
  */
-// usunąć dłuższe niż limit
-// wywalić puste wiersze ??
-// duże lietry na małe, // pozamiaeniać nieangielskie znaki
-// zrobic listę [slowoWlasciwe, slowoZrodlowe
-// przesegregować
-// usunąć duplikaty a jednocześnie we właściwym słowie dopisać
-
-// spr jak długi string js

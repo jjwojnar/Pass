@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>crypto getRandomValues() method</title>
+  </head>
+  <body style="text-align: center">
+    <h1 style="color: green">GeeksForGeeks</h1>
+    <p>HTML | crypto getRandomValues() method</p>
+    <p>0 - 4 294 967 295 (niecałe 4,3 mld)</p>
+    <button onclick="Geeks();">click here</button>
+    <p id="arr"></p>
+    <script>
+      var arr = document.getElementById("arr");
+      function Geeks() {
+        var array = new Uint32Array(3);
+        a = window.crypto.getRandomValues(array);
+        console.log(a);
+        arr.innerHTML = "The randomly generated array is: " + a;
+      }
+    </script>
+  </body>
+</html>

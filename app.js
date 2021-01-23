@@ -179,12 +179,12 @@ const dlFinDict = finalDictionary.length;
 /* 
 GENERUJE LICZBY LOSOWE -> losuje słowa
 */
-// liczba losowa
+// LICZBA LOSOWA
 console.log(dlFinDict);
 // tu math rand, w rzeczywistości później crypto
 function losowa(no) {
   return Math.floor(Math.random() * no);
-} // returns a random integer from 0 to 9
+} // returns a random integer from 0 to "no"
 
 console.log(
   losowa(dlFinDict),
@@ -200,6 +200,7 @@ console.log(finalDictionary);
 // const cutWords = 4
 
 /* przycinanie passphrase */
+// dodac minimalną ilość słów
 // const maxPassphraseLength = 25;
 
 /* 

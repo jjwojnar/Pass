@@ -1,62 +1,45 @@
 "use strict";
+/* 
+SŁOWNIK, max długość słów, ile słów
+*/
+const maxLength = 5;
+const noOfWords = 4;
 
-const maxZnakow = 6;
-// let frString = `Aachen, Aachenem, Aachenie, Aachenowi, Aachenu
-// Aalborg, Aalborgiem, Aalborgowi, Aalborgu
-// abba, abbach, abbami, abbą, abbę, abbie, abbo, abbom, abbowie, abbów, abby
-// Abba, Abbą, Abbę, Abbie, Abbo, Abby
-// ABBA, ABB-ą, ABB-ę, ABB-ie, ABB-o, ABB-y`;
-let frString = `abcdefgh
+/* let frString = `Aachen, Aachenem, Aachenie, Aachenowi, Aachenu
+Aalborg, Aalborgiem, Aalborgowi, Aalborgu
+abba, abbach, abbami, abbą, abbę, abbie, abbo, abbom, abbowie, abbów, abby
+Abba, Abbą, Abbę, Abbie, Abbo, Abby
+ABBA, ABB-ą, ABB-ę, ABB-ie, ABB-o, ABB-y`; */
+let preDictionary = `abcdefgh
 abc xyz
 abba, abbach, abbami, abbą
 Abba, Abbą, Abbę
 ABBA, ABB-ą, ABB-ę`;
 
-/* console.log(
-  `same slowa:
-`,
-  frString
-); */
+/* 
+ZE STRINGA DO TABLICY
+*/
+// cały słownik to tablica, każdy wiersz (wszytskie odmainy słowa) element tablicy - to string
+const dictionary = preDictionary.split("\n");
+// słownik to tablica, zawierająca tablice (wszytskie odmainy słowa). Elementy 2. poziomu tabl to stringi - słowa (odmiany)
+const dictionary2D = dictionary.map((verse) => verse.split(", "));
 
-const frWierszeArr = frString.split("\n");
-/* console.log(
-  `
-========
-wierszeArr:
-`,
-  frWierszeArr
-); */
+/* 
+TABLICA z tablicami źrółowsłów+odmiany
+ */
+// przerabia tablicę tak, że 1 wiersz / tablica/ -> na tablicę zawierającą źródłosłów [0] i tablicę z odmianami [1]
+let zrodloPlusOdmiany = dictionary2D.map((array) => [array[0], array]);
+// console.log(zrodloPlusOdmiany);
 
-const frSlowaArr = frWierszeArr.map((verse) => verse.split(", "));
-/* console.log(
-  `
-========
-każdy wiersz to array. frSlowaArr`,
-  frSlowaArr,
-  `
-========
-  `
-); */
-
-function removeDuplicates(array) {
-  return [...new Set(array)];
-}
-
-const maxLength = 5;
-
-let fr = frSlowaArr.map((verseArr) => [
-  verseArr[0],
-  removeDuplicates(
-    // usunięto duplikaty po  tym jak słowa mają tylko angielskie znaki i małe litery
-    verseArr
-      .map((word) => convertString(word)) // tylko małe litery z alfabetu angielskiego
-      .filter((word) => word.length <= maxLength) // nie dłuższe słowaniż limit znaków
-  ),
-]);
-
+/* 
+SŁOWA(odmiany) znaki tylko angielskie, małe liter; BEZ DUPLIKATÓW, BEZ SŁÓW GDZIE L. ODMIAN = 0
+ */
+// funkcja, która przerabia słowa
 function convertString(phrase) {
+  // na małe litery:
   let str = phrase.toLowerCase();
 
+  // usuwa znaki polskie:
   const charMap = {
     ą: "a",
     ć: "c",
@@ -78,52 +61,60 @@ function convertString(phrase) {
     });
   }
 
-  // if there are other invalid chars, convert them into blank spaces
+  // deletes invalid chars, (convert them into blank spaces)
   str = str.replace(/[^a-z]/gi, "");
 
   return str;
 }
 
-/* console.log(
-  `każdy wiersz to arr skladajacyc się z 1. słowa i drugi elementem jest cały wiesz - arr. usunieto nielitery
-`,
-  fr
-); */
-// wywalić puste wiersze
-const frNoEmpty = fr.filter((element) => element[1].length > 0);
+// funkcja, która usuwa duplikaty
+function removeDuplicates(array) {
+  return [...new Set(array)];
+}
 
-console.log("frNoEmpty", frNoEmpty, "==========");
+// najpierw przerabia słowa, potem usuwa duplikaty
+console.log(zrodloPlusOdmiany);
+const przerobioneOdmiany = zrodloPlusOdmiany.map((wiersz) => [
+  wiersz[0],
+  wiersz[1]
+    .map((word) => convertString(word))
+    .filter((word) => word.length <= maxLength),
+]);
+const bezDuplikatowOdm = przerobioneOdmiany.filter((el) => el[1].length > 0);
 
-// zrobic listę [slowoWlasciwe, slowoZrodlowe
-/* 
-frOdwr = frNoEmpty.map((el) => el);
-console.log(frOdwr);
- */
-// przesegregować
-
-// usunąć duplikaty a jednocześnie we właściwym słowie dopisać
-
-// spr jak długi string js
+console.log(bezDuplikatowOdm);
 
 /* 
-// How for.each actually works:
-var arr = ["one", "two", "three"];
-arr.forEach(function (part, index) {
-  arr[index] = "four";
-});
-console.log(arr);
-//
-// Now if array arr was an array of reference types, the following code will work because reference types store a memory location of an object instead of the actual object.
-//
-var arr = [{ num: "one" }, { num: "two" }, { num: "three" }];
-arr.forEach(function (part, index) {
-  // part and arr[index] point to the same object
-  // so changing the object that part points to changes the object that arr[index] points to
-  part.num = "four";
-});
-console.log(arr[0].num);
-console.log(arr[1].num);
-console.log(arr[2].num);
-console.log(arr);
-//
+TABLICA: 1 odmian, 2 źródłosłowów
  */
+// przerabia aby to odmiany były 'rekordami' mające ekstra słowo/a od których pochodzą
+// sortuje
+// usuwa/łączy duplikaty
+
+/* 
+GENERUJE LICZBY LOSOWE -> losuje słowa
+*/
+
+/* przycinanie słów */
+// jeżeli chce się bardziej przyciąć słowa (max l. znaków)
+// const cutWords = 4
+
+/* przycinanie passphrase */
+// const maxPassphraseLength = 25;
+
+/* 
+prezentuje słowa oddzielone myślinikami
+*/
+
+// pomysły na feachery:
+/* 
+- wyświetlanie siły hasła (uproszczone, nie licze tego, że np. /z nie waży / żnie wazy/ itp. to ten sam ciąg znaków) i że jak się przycina a dożo słów jest nie... to zmniejsza się liczba opcji; social engeeneering oraz tego, że można wylosować hasło podobne lub takie same jak hasła z baz haseł uzywanych do łamania haseł (typu Correct Horse Battery Staple)
+- liczby, znaki, słowa, przycięte słowa (jw), domyślne passpharese (z DUŻĄ, małą, cyfrą i znakiem specjalnym)
+- zaawansowane: -> wybrać ile max / min ma być konkretnych rzeczy
+- jeżeli słowa to czym oddzielane: znak (opcja do wpisania jaki), duże litery, spacje, mieszanka
+- utrudniacze w losowych miejscach - jakie + ile
+- wyświetlanie znkaów innymi kolorami, wizualne oddzielanie słów mimo, że brak spacji
+- wybieranie ustawień: 4/6/8/20 cyfr, tylko słowa (max4 - telefon), orange, 2słowa(1 losowy przerywnik), 3słowa (DUŻA i znak/cyfra), 4 słowa (DUŻA, cyfra i znak), do x (dom. 30) znaków-max y (dom.10) na słowo-w losowych miejscach przeszkadzajki, NO-SHIFT-x(dom.2) słów y znaków max na słowo losowe (dom. 8), przeszkadzajki (dom. 2)
+- tworzenie takich ustawień i zapisywanie do pliku
+- wczytywanie tych ustawień oraz słownika
+*/

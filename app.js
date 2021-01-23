@@ -12,7 +12,7 @@ Abba, Abbą, Abbę
 ABBA, ABB-ą, ABB-ę`;
 
 /* 
-Ze STRINGA DO TABLICY
+ZE STRINGA DO TABLICY
 */
 // cały słownik to tablica, każdy wiersz (wszytskie odmainy słowa) element tablicy - to string
 const frWierszeArr = dictionary.split("\n");

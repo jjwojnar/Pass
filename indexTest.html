@@ -7,11 +7,11 @@
     <h1 style="color: green">GeeksForGeeks</h1>
     <p>HTML | crypto getRandomValues() method</p>
     <p>0 - 4 294 967 295 (niecałe 4,3 mld)</p>
-    <button onclick="Geeks();">click here</button>
+    <button onclick="createRandNum();">click here</button>
     <p id="arr"></p>
     <script>
       var arr = document.getElementById("arr");
-      function Geeks() {
+      function createRandNum() {
         var array = new Uint32Array(3);
         a = window.crypto.getRandomValues(array);
         console.log(a);

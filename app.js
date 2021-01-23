@@ -5,7 +5,7 @@ SŁOWNIK, max długość słów, ile słów
 const maxLength = 5;
 const noOfWords = 4;
 
-/* let frString = `Aachen, Aachenem, Aachenie, Aachenowi, Aachenu
+/* let preDictionary = `Aachen, Aachenem, Aachenie, Aachenowi, Aachenu
 Aalborg, Aalborgiem, Aalborgowi, Aalborgu
 abba, abbach, abbami, abbą, abbę, abbie, abbo, abbom, abbowie, abbów, abby
 Abba, Abbą, Abbę, Abbie, Abbo, Abby
@@ -67,27 +67,31 @@ function convertString(phrase) {
   return str;
 }
 
-// funkcja, która usuwa duplikaty
-function removeDuplicates(array) {
-  return [...new Set(array)];
-}
-
 // najpierw przerabia słowa, potem usuwa duplikaty
-console.log(zrodloPlusOdmiany);
-const przerobioneOdmiany = zrodloPlusOdmiany.map((wiersz) => [
+console.log("zrodloPlusOdmiany", zrodloPlusOdmiany);
+const przerobioneOdmMaxChar = zrodloPlusOdmiany.map((wiersz) => [
   wiersz[0],
   wiersz[1]
     .map((word) => convertString(word))
     .filter((word) => word.length <= maxLength),
 ]);
-const bezDuplikatowOdm = przerobioneOdmiany.filter((el) => el[1].length > 0);
+console.log("przerobioneOdmMaxChar", przerobioneOdmMaxChar);
 
+// funkcje, które usuwają duplikaty odmian ORAZ "rekordy" bez odmian
+const bezPustychOdm = przerobioneOdmMaxChar.filter((el) => el[1].length > 0);
+console.log("bezPustychOdm", bezPustychOdm);
+
+const bezDuplikatowOdm = bezPustychOdm.map((wiersz) => [
+  wiersz[0],
+  [...new Set(wiersz[1])],
+]);
 console.log(bezDuplikatowOdm);
 
 /* 
 TABLICA: 1 odmian, 2 źródłosłowów
  */
 // przerabia aby to odmiany były 'rekordami' mające ekstra słowo/a od których pochodzą
+
 // sortuje
 // usuwa/łączy duplikaty
 

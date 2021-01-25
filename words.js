@@ -1,4 +1,4 @@
-let frString = `3D
+let preDictionary = `3D
 500 plus
 a
 a.
